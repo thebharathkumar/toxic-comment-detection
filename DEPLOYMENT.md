@@ -2,76 +2,109 @@
 
 Your frontend is in a subdirectory (`toxic-comment-frontend`), so you need to configure Vercel properly.
 
-## Method 1: Vercel Dashboard (Recommended)
+## Method 1: Vercel Dashboard (Recommended) ✅
 
-1. Go to [vercel.com/new](https://vercel.com/new)
+### Step 1: Go to Vercel
+Visit [vercel.com/new](https://vercel.com/new) and sign in with GitHub
 
-2. Import your GitHub repository: `thebharathkumar/toxic-comment-detection`
+### Step 2: Import Repository
+- Click "Import Git Repository"
+- Select: `thebharathkumar/toxic-comment-detection`
+- Click "Import"
 
-3. **IMPORTANT**: Before clicking "Deploy", configure these settings:
+### Step 3: Configure Project Settings ⚠️ CRITICAL
 
-   **Framework Preset:** Next.js
+**Before clicking Deploy**, you MUST configure these settings:
 
-   **Root Directory:** `toxic-comment-frontend` ← Click "Edit" and set this!
+1. **Root Directory** (MOST IMPORTANT!)
+   - Click "Edit" button next to Root Directory
+   - Enter: `toxic-comment-frontend`
+   - This tells Vercel where your Next.js app lives
 
-   **Build Command:** `npm run build` (default is fine)
+2. **Framework Preset**
+   - Should auto-detect as: `Next.js`
+   - If not, select it manually
 
-   **Output Directory:** `.next` (default is fine)
+3. **Build Settings** (Leave as default)
+   - Build Command: `npm run build`
+   - Output Directory: `.next`
+   - Install Command: `npm install`
 
-   **Install Command:** `npm install` (default is fine)
-
-4. (Optional) Add environment variable:
+4. **Environment Variables** (Optional but recommended)
+   - Click "Add" under Environment Variables
    - **Name:** `HUGGINGFACE_API_KEY`
-   - **Value:** Your Hugging Face API token from https://huggingface.co/settings/tokens
-   - Note: App works in demo mode without this
+   - **Value:** Your token from https://huggingface.co/settings/tokens
+   - **Note:** App works in demo mode without this!
 
-5. Click **"Deploy"**
+### Step 4: Deploy
+- Click **"Deploy"** button
+- Wait 2-3 minutes for build
+- Your app will be live! 🎉
 
-6. Wait 2-3 minutes for build to complete
+### Step 5: Get Your URL
+Your app will be at: `https://toxic-comment-detection-xxxx.vercel.app`
 
-7. Your app will be live at: `https://your-project-name.vercel.app`
+## Method 2: Fix Existing Deployment (If You Already Deployed) 🔧
 
-## Method 2: Vercel CLI
+If you already created a Vercel project and it's showing a 404 or "No Next.js version detected" error:
+
+### Option A: Update Project Settings (Easiest)
+
+1. Go to your Vercel project dashboard
+2. Click **Settings** (top navigation)
+3. Click **General** (left sidebar)
+4. Find **"Root Directory"** section
+5. Click **"Edit"**
+6. Type: `toxic-comment-frontend`
+7. Click **"Save"**
+8. Go to **Deployments** tab
+9. Find the latest deployment
+10. Click the three dots (**...**) → **"Redeploy"**
+11. ✅ Done! Your app should work now
+
+### Option B: Delete and Redeploy Fresh (Clean Slate)
+
+1. Go to your project **Settings** → **General**
+2. Scroll to bottom → Click **"Delete Project"**
+3. Confirm deletion
+4. Follow **Method 1** above to deploy fresh with correct settings
+
+## Method 3: Vercel CLI (Advanced)
 
 ```bash
 cd toxic-comment-frontend
 npx vercel --prod
 ```
 
-The CLI will automatically detect the Next.js configuration.
+The CLI will automatically detect Next.js when run from inside the folder.
 
-## Method 3: Re-deploy Current Project
+## Troubleshooting Common Issues
 
-If you already have a Vercel project that's showing 404:
+### ❌ Error: "No Next.js version detected"
+**Cause:** Root Directory is not set correctly
+**Fix:** Go to Settings → General → Root Directory → Set to `toxic-comment-frontend` → Redeploy
 
-1. Go to your project settings: `https://vercel.com/your-username/your-project/settings`
+### ❌ 404: NOT_FOUND
+**Cause:** Vercel is looking in the wrong folder
+**Fix:** Same as above - set Root Directory to `toxic-comment-frontend`
 
-2. Click **"General"** in the left sidebar
+### ❌ Build fails with package errors
+**Cause:** Node version might be too old
+**Fix:**
+1. Go to Settings → General
+2. Find "Node.js Version"
+3. Set to `20.x` or `18.x`
+4. Redeploy
 
-3. Scroll to **"Root Directory"**
+### ⚠️ API predictions not working
+**Normal!** The app works in two modes:
+- **Demo Mode** (default): Uses keyword-based detection, works immediately
+- **Production Mode**: Requires `HUGGINGFACE_API_KEY` environment variable
 
-4. Click **"Edit"** and enter: `toxic-comment-frontend`
-
-5. Click **"Save"**
-
-6. Go to **"Deployments"** tab
-
-7. Click **"Redeploy"** on the latest deployment
-
-## Troubleshooting
-
-### Still getting 404?
-- Make sure Root Directory is set to `toxic-comment-frontend`
-- Check the build logs for errors
-- Verify the branch is deployed (should be your claude branch or main)
-
-### Build fails?
-- Check that Node.js version is 18.x or higher in Vercel settings
-- Look at build logs for specific error messages
-
-### API not working?
-- The app will work in demo mode without Hugging Face API key
-- To enable real AI: Add `HUGGINGFACE_API_KEY` in environment variables
+To enable production AI:
+1. Get free API token: https://huggingface.co/settings/tokens
+2. Add to Vercel: Settings → Environment Variables
+3. Redeploy
 
 ## What Gets Deployed
 
